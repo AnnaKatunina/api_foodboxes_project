@@ -1,0 +1,7 @@
+.idea
+venv
+.pytest_cache
+.settings
+.project
+
+*.pyc
