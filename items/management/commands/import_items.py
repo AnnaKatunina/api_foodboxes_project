@@ -1,4 +1,5 @@
 import requests
+
 from django.core.management import BaseCommand
 
 from items.models import Item
@@ -11,15 +12,15 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         response = requests.get(url=URL).json()
 
-        for item in response:
+        for item_dict in response:
             Item.objects.get_or_create(
-                id=item['id'],
+                id=item_dict['id'],
                 defaults={
-                    'title': item['title'],
-                    'description': item['description'],
-                    'image': item['image'],
-                    'weight': item['weight_grams'],
-                    'price': item['price'],
+                    'title': item_dict['title'],
+                    'description': item_dict['description'],
+                    'image': f'http://localhost:8000/media/items/foodb{item_dict["id"]}.jpg',
+                    'weight': item_dict['weight_grams'],
+                    'price': item_dict['price'],
                 }
             )
         return

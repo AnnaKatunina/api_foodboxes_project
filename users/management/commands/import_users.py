@@ -12,18 +12,19 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         response = requests.get(url=URL).json()
 
-        for user in response:
-            User.objects.get_or_create(
-                username=re.findall('(\S+)@', user['email'])[0],
+        for dict_user in response:
+            user, created = User.objects.get_or_create(
+                id=dict_user['id'],
                 defaults={
-                    'id': user['id'],
-                    'first_name': user['info']['name'],
-                    'last_name': user['info']['surname'],
-                    'email': user['email'],
-                    'password': user['password'],
-                    'middle_name': user['info']['patronymic'],
-                    'phone': user['contacts']['phoneNumber'],
-                    'address': user['city_kladr'],
+                    'username': re.findall('(\S+)@', dict_user['email'])[0],
+                    'first_name': dict_user['info']['name'],
+                    'last_name': dict_user['info']['surname'],
+                    'email': dict_user['email'],
+                    'middle_name': dict_user['info']['patronymic'],
+                    'phone': dict_user['contacts']['phoneNumber'],
+                    'address': dict_user['city_kladr'],
                 }
             )
+            user.set_password(dict_user['password'])
+            user.save()
         return

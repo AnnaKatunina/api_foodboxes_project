@@ -17,12 +17,6 @@ class Command(BaseCommand):
                 published_at = timezone.now
             else:
                 published_at = review['published_at']
-            if review['status'] == 'published':
-                status = '2'
-            elif review['status'] == 'hidden':
-                status = '3'
-            else:
-                status = '1'
             Review.objects.get_or_create(
                 id=review['id'],
                 defaults={
@@ -30,7 +24,7 @@ class Command(BaseCommand):
                     'text': review['content'],
                     'created_at': review['created_at'],
                     'published_at': published_at,
-                    'status': status,
+                    'status': review['status'],
                 }
             )
         return
