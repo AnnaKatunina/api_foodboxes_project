@@ -18,7 +18,7 @@ class Command(BaseCommand):
                 defaults={
                     'title': item_dict['title'],
                     'description': item_dict['description'],
-                    'image': f'http://localhost:8000/media/items/foodb{item_dict["id"]}.jpg',
+                    'image': f'items/foodb{item_dict["id"]}.jpg',
                     'weight': item_dict['weight_grams'],
                     'price': item_dict['price'],
                 }
